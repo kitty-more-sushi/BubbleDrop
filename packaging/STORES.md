@@ -5,7 +5,7 @@ everything else (listing text, icon, screenshots, build recipes) is already in t
 
 | Store | Platform | Status | What the owner does |
 |---|---|---|---|
-| winget (Windows Package Manager) | Windows | Manifests in `packaging/winget/`, pull request to `microsoft/winget-pkgs` | Comment `@microsoft-github-policy-service agree` on the PR when the CLA bot asks |
+| winget (Windows Package Manager) | Windows | Submitted: [microsoft/winget-pkgs#455458](https://github.com/microsoft/winget-pkgs/pull/455458) | Comment `@microsoft-github-policy-service agree` on the PR when the CLA bot asks |
 | IzzyOnDroid | Android | Ready: APK on GitHub Releases, listing in `fastlane/` | Create a Codeberg account and open the request below |
 | F-Droid | Android | Build recipe in `packaging/fdroid/app.bubbledrop.yml` | Create a GitLab account and open a merge request to fdroiddata |
 | Microsoft Store | Windows | Not started | Register a free individual developer account in Partner Center (needs ID verification) |
