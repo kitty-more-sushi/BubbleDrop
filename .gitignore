@@ -8,3 +8,5 @@ android/.kotlin/
 android/local.properties
 release/
 .claude/
+android/*.jks
+android/keystore.properties

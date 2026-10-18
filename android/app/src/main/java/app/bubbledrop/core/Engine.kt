@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicLong
 
 const val PROTO = 1
 const val APP = "BubbleDrop"
-const val VERSION = "1.0.0"
+const val VERSION = "1.0.1"
 const val DEFAULT_PORT = 47888
 const val UDP_PORT = 47889
 const val MCAST = "239.255.42.99"

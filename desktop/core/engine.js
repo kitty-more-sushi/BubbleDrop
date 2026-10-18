@@ -15,7 +15,7 @@ const { pipeline } = require('stream/promises');
 
 const PROTO = 1;
 const APP = 'BubbleDrop';
-const VERSION = '1.0.0';
+const VERSION = '1.0.1';
 const DEFAULT_PORT = 47888;
 const UDP_PORT = 47889;
 const MCAST = '239.255.42.99';

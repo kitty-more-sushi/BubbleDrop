@@ -1,5 +1,13 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
+}
+
+// Release key lives outside git in android/keystore.properties (see README "Signing").
+val keystoreProps = Properties().apply {
+    val f = rootProject.file("keystore.properties")
+    if (f.isFile) f.inputStream().use { load(it) }
 }
 
 android {
@@ -11,15 +19,26 @@ android {
         applicationId = "app.bubbledrop"
         minSdk = 29
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 2
+        versionName = "1.0.1"
+    }
+
+    signingConfigs {
+        if (keystoreProps.containsKey("storeFile")) {
+            create("release") {
+                storeFile = rootProject.file(keystoreProps.getProperty("storeFile"))
+                storePassword = keystoreProps.getProperty("storePassword")
+                keyAlias = keystoreProps.getProperty("keyAlias")
+                keyPassword = keystoreProps.getProperty("keyPassword")
+            }
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            // Signed with the local debug key so the APK installs directly (sideloading).
-            signingConfig = signingConfigs.getByName("debug")
+            // Without a release key (e.g. F-Droid's own build) the APK is left for the store to sign.
+            signingConfig = signingConfigs.findByName("release")
         }
     }
 

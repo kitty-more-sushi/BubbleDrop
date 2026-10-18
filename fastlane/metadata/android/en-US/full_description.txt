@@ -1,0 +1,23 @@
+BubbleDrop sends files between Android phones and Windows PCs over your local network. Nothing goes through the internet, so it uses no mobile data and needs no account.
+
+<b>How it works</b>
+Open BubbleDrop on both devices. On the same Wi-Fi they find each other automatically. Pick what to send, tap the other device, and it asks the other side to accept.
+
+<b>Features</b>
+<ul>
+<li>Send files, whole folders, photos and videos, installed apps (APK) and text or links</li>
+<li>No Wi-Fi? Start a private local-only hotspot from the app. It never uses your mobile data, and a Windows PC can join it from inside BubbleDrop</li>
+<li>Connect by QR code, IP address or a network scan when automatic discovery is blocked</li>
+<li>Every incoming transfer needs your OK; trusted devices can skip the question</li>
+<li>Web Share: any phone or computer can send or download files in a browser with a 4-digit PIN, no app needed</li>
+<li>Share from any app through the Android share menu</li>
+<li>Keeps receiving in the background, saves to Download/BubbleDrop</li>
+<li>Live progress and speed, history, dark and light themes</li>
+</ul>
+
+<b>Privacy</b>
+BubbleDrop contacts no server and collects nothing. Transfers stay on your local network. Version 1.x sends files unencrypted over the local network, so use it on networks you trust.
+
+The Windows app is available from the same project page.
+
+Made with love by kitty_no_sushie.

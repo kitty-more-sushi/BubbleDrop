@@ -20,11 +20,19 @@ No internet, no mobile data, no account.
 
 | Device | File (from [Releases](../../releases/latest)) | Notes |
 |---|---|---|
-| Windows | `BubbleDrop-Setup-1.0.0.exe` | Recommended. Also adds the Windows Firewall rule so phones can reach your PC. |
-| Windows | `BubbleDrop-Portable-1.0.0.exe` | No install. Click **Allow access** (tick *Public* too) when Windows Firewall asks. |
-| Android 10+ | `BubbleDrop-1.0.0.apk` | Copy it to the phone and open it. Allow "Install unknown apps" for your file manager when asked. |
+| Windows | `BubbleDrop-Setup-<version>.exe` | Recommended. Also adds the Windows Firewall rule so phones can reach your PC. |
+| Windows | `BubbleDrop-Portable-<version>.exe` | No install. Click **Allow access** (tick *Public* too) when Windows Firewall asks. |
+| Android 10+ | `BubbleDrop-<version>.apk` | Copy it to the phone and open it. Allow "Install unknown apps" for your file manager when asked. |
 
 Windows may show "Windows protected your PC" because the app isn't code-signed: click **More info → Run anyway**.
+
+Once the Windows Package Manager listing is approved you can also install with:
+
+```bash
+winget install kitty_no_sushie.BubbleDrop
+```
+
+Store listings (winget, IzzyOnDroid, F-Droid) are tracked in [packaging/STORES.md](packaging/STORES.md).
 
 ## Connect the devices
 

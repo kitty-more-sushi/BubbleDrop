@@ -1,0 +1,4 @@
+First public store release.
+- Release-key signing (replaces the debug-signed 1.0.0 APK; uninstall 1.0.0 before installing)
+- Send files, folders, photos, apps and text between Android and Windows over Wi-Fi or a local hotspot
+- Web Share for any browser, QR connect, trusted devices
