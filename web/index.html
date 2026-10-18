@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="bd-token" content="__BD_TOKEN__">
+<meta name="color-scheme" content="dark light">
+<title>BubbleDrop</title>
+<link rel="icon" href="/static/icon.png">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<div class="bg" aria-hidden="true">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <img class="mascot-bg" src="/static/mascot.jpg" alt="">
+  <div class="bubbles" id="bubbles"></div>
+</div>
+
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <img class="brand-logo" src="/static/icon.png" alt="">
+      <div>
+        <div class="brand-name">Bubble<span>Drop</span></div>
+        <div class="brand-tag">pop it · drop it · no internet</div>
+      </div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="me-card" id="me-card"></div>
+    <div class="sig-foot">made with 💗 by <b>kitty_no_sushie</b></div>
+  </aside>
+
+  <main class="main">
+    <div class="titlebar"></div>
+    <header class="mhead">
+      <img class="brand-logo sm" src="/static/icon.png" alt="">
+      <div class="brand-name">Bubble<span>Drop</span></div>
+      <button class="icon-btn" data-act="go" data-page="connect" aria-label="Connect">__QR__</button>
+    </header>
+    <div id="page" class="page"></div>
+  </main>
+
+  <nav class="tabs" id="tabs"></nav>
+</div>
+
+<div id="modal-root"></div>
+<div id="toasts"></div>
+<div id="drop-overlay"><div class="drop-inner"><img src="/static/mascot.jpg" alt=""><b>Drop it like it's hot</b><span>Files and folders go straight into your bubble</span></div></div>
+<div id="offline" class="offline">Reconnecting to BubbleDrop…</div>
+
+<script src="/static/lib/qrcode.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

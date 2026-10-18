@@ -1,0 +1,62 @@
+{
+  "name": "bubbledrop",
+  "productName": "BubbleDrop",
+  "version": "1.0.0",
+  "description": "Fast offline file sharing between Windows and Android",
+  "author": "kitty_no_sushie",
+  "license": "MIT",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node test/transfer.test.js",
+    "demo": "node dev/demo.js",
+    "sync-web": "node scripts/sync-web.js",
+    "dist": "node scripts/sync-web.js && electron-builder --win --x64"
+  },
+  "devDependencies": {
+    "electron": "44.9.0",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "app.bubbledrop.desktop",
+    "productName": "BubbleDrop",
+    "copyright": "© 2026 kitty_no_sushie",
+    "electronDist": "node_modules/electron/dist",
+    "electronVersion": "44.9.0",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "core/**/*",
+      "web/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "BubbleDrop",
+      "include": "build/installer.nsh",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "artifactName": "BubbleDrop-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "BubbleDrop-Portable-${version}.${ext}"
+    }
+  }
+}

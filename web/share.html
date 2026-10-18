@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BubbleDrop · Web Share</title>
+<link rel="icon" href="/static/icon.png">
+<style>
+@font-face { font-family: Fredoka; font-weight: 400; src: url(/static/fonts/fredoka-400.woff2) format('woff2'); }
+@font-face { font-family: Fredoka; font-weight: 600; src: url(/static/fonts/fredoka-600.woff2) format('woff2'); }
+@font-face { font-family: Fredoka; font-weight: 700; src: url(/static/fonts/fredoka-700.woff2) format('woff2'); }
+:root { --bg:#120a1a; --card:rgba(255,255,255,.06); --line:rgba(255,255,255,.1); --text:#fcf0ff; --muted:#bfa9cc; --pink:#ff6fae; --grad:linear-gradient(135deg,#ff6fae,#c58bff); color-scheme: dark; }
+@media (prefers-color-scheme: light) { :root { --bg:#fff3f9; --card:rgba(255,255,255,.8); --line:rgba(140,60,120,.14); --text:#3b2142; --muted:#7b5d88; color-scheme: light; } }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text); font: 16px/1.45 Fredoka, "Segoe UI", system-ui, sans-serif; }
+body::before { content: ""; position: fixed; inset: 0; background: radial-gradient(circle at 10% 0%, #ff6fae55, transparent 45%), radial-gradient(circle at 100% 40%, #b28dff44, transparent 45%); z-index: -2; }
+.mascot { position: fixed; right: -60px; bottom: -20px; width: 380px; opacity: .16; z-index: -1; -webkit-mask-image: radial-gradient(circle, #000 40%, transparent 70%); mask-image: radial-gradient(circle, #000 40%, transparent 70%); }
+.wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 60px; }
+header { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+header img { width: 46px; height: 46px; border-radius: 50%; box-shadow: 0 6px 20px #ff6fae66; }
+.brand { font-weight: 700; font-size: 22px; }
+.brand span { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 20px; margin-bottom: 16px; backdrop-filter: blur(14px); }
+h2 { margin: 0 0 4px; font-size: 22px; } h3 { margin: 0 0 12px; }
+.muted { color: var(--muted); }
+.btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--card); color: inherit; font: inherit; font-weight: 600; padding: 10px 18px; border-radius: 999px; cursor: pointer; text-decoration: none; }
+.btn.primary { background: var(--grad); color: #fff; border: 0; box-shadow: 0 8px 22px #ff6fae55; }
+.pin { display: flex; gap: 10px; margin: 16px 0; }
+.pin input { width: 58px; height: 68px; text-align: center; font: 700 30px Fredoka, sans-serif; border-radius: 16px; border: 1px solid var(--line); background: var(--card); color: inherit; outline: none; }
+.pin input:focus { border-color: var(--pink); box-shadow: 0 0 0 4px #ff6fae33; }
+.file { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; background: var(--card); margin-bottom: 8px; }
+.file .n { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file small { color: var(--muted); white-space: nowrap; }
+.drop { border: 2px dashed #ff6fae88; border-radius: 22px; padding: 30px 16px; text-align: center; transition: background .2s; }
+.drop.on { background: #ff6fae22; }
+.bar { height: 6px; border-radius: 6px; background: var(--line); overflow: hidden; margin-top: 6px; }
+.bar i { display: block; height: 100%; width: 0; background: var(--grad); transition: width .2s; }
+.err { color: #ff6b81; min-height: 1.4em; }
+.hide { display: none !important; }
+</style>
+</head>
+<body>
+<img class="mascot" src="/static/mascot.jpg" alt="">
+<div class="wrap">
+  <header><img src="/static/icon.png" alt=""><div><div class="brand">Bubble<span>Drop</span></div><div class="muted" style="font-size:13px">Web Share · no app needed</div></div></header>
+
+  <div id="off" class="card hide"><h2>Web Share is off</h2><p class="muted" id="off-txt"></p></div>
+
+  <div id="auth" class="card hide">
+    <h2 id="auth-title">Enter the PIN</h2>
+    <p class="muted">It's shown on the BubbleDrop screen under <b>Connect → Web Share</b>.</p>
+    <form id="pin-form"><div class="pin">
+      <input inputmode="numeric" maxlength="1" autocomplete="off"><input inputmode="numeric" maxlength="1" autocomplete="off"><input inputmode="numeric" maxlength="1" autocomplete="off"><input inputmode="numeric" maxlength="1" autocomplete="off">
+    </div><div class="err" id="pin-err"></div><button class="btn primary" type="submit">Unlock ✨</button></form>
+  </div>
+
+  <div id="main" class="hide">
+    <div class="card">
+      <h3 id="dl-title">Files for you</h3>
+      <div id="dl-list"></div>
+      <button class="btn" id="dl-all" style="margin-top:8px">⬇ Download all</button>
+    </div>
+    <div class="card">
+      <h3 id="up-title">Send files</h3>
+      <div class="drop" id="drop">
+        <div style="font-size:36px">🫧</div>
+        <p class="muted">Drop files here, or</p>
+        <label class="btn primary">Choose files<input type="file" id="pick" multiple hidden></label>
+        <label class="btn">Choose folder<input type="file" id="pick-dir" webkitdirectory hidden></label>
+      </div>
+      <div id="up-list" style="margin-top:14px"></div>
+    </div>
+  </div>
+  <p class="muted" style="text-align:center;font-size:12px;margin-top:28px">BubbleDrop · made with 💗 by <b style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">kitty_no_sushie</b></p>
+</div>
+<script>
+'use strict';
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt = (n) => { if (n < 1024) return n + ' B'; const u = ['KB', 'MB', 'GB', 'TB']; let i = -1; do { n /= 1024; i++; } while (n >= 1024 && i < 3); return n.toFixed(n < 10 ? 1 : 0) + ' ' + u[i]; };
+let owner = 'them';
+let files = [];
+
+async function status() {
+  const s = await fetch('/web/status').then((r) => r.json()).catch(() => null);
+  if (!s) return;
+  owner = s.name;
+  $('#off').classList.toggle('hide', s.enabled);
+  $('#off-txt').textContent = `Ask ${s.name} to turn on Web Share in BubbleDrop → Connect. Or install BubbleDrop for the full experience.`;
+  $('#auth').classList.toggle('hide', !s.enabled || s.authed);
+  $('#main').classList.toggle('hide', !s.enabled || !s.authed);
+  $('#auth-title').textContent = `${s.avatar} Unlock ${s.name}'s bubble`;
+  $('#dl-title').textContent = `Files from ${s.name}`;
+  $('#up-title').textContent = `Send files to ${s.name}`;
+  if (s.enabled && s.authed) loadFiles();
+  else if (s.enabled) $('.pin input').focus();
+}
+
+async function loadFiles() {
+  const r = await fetch('/web/files');
+  if (r.status === 401 || r.status === 403) return status();
+  files = (await r.json()).files || [];
+  $('#dl-list').innerHTML = files.length ? files.map((f) => `<div class="file"><span>📄</span><span class="n" title="${esc(f.rel)}">${esc(f.name)}</span><small>${fmt(f.size)}</small><a class="btn" href="/web/dl?id=${encodeURIComponent(f.id)}" download>⬇</a></div>`).join('') : `<p class="muted">Nothing shared right now. ${esc(owner)} can add files in BubbleDrop.</p>`;
+  $('#dl-all').classList.toggle('hide', files.length < 2);
+}
+
+const pins = [...document.querySelectorAll('.pin input')];
+pins.forEach((inp, i) => {
+  inp.addEventListener('input', () => { inp.value = inp.value.replace(/\D/g, ''); if (inp.value && pins[i + 1]) pins[i + 1].focus(); if (pins.every((p) => p.value)) $('#pin-form').requestSubmit(); });
+  inp.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && !inp.value && pins[i - 1]) pins[i - 1].focus(); });
+});
+$('#pin-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const r = await fetch('/web/auth', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ pin: pins.map((p) => p.value).join('') }) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) { $('#pin-err').textContent = j.error || 'Nope'; pins.forEach((p) => (p.value = '')); pins[0].focus(); return; }
+  status();
+});
+
+$('#dl-all').addEventListener('click', async () => {
+  for (const f of files) {
+    const a = document.createElement('a');
+    a.href = '/web/dl?id=' + encodeURIComponent(f.id);
+    a.download = f.name;
+    document.body.appendChild(a); a.click(); a.remove();
+    await new Promise((r) => setTimeout(r, 700));
+  }
+});
+
+function upload(list) {
+  const batch = Math.random().toString(36).slice(2);
+  let chain = Promise.resolve();
+  for (const f of list) {
+    const row = document.createElement('div');
+    row.className = 'file';
+    row.innerHTML = `<span>⬆</span><div class="n"><div>${esc(f.webkitRelativePath || f.name)}</div><div class="bar"><i></i></div></div><small>${fmt(f.size)}</small>`;
+    $('#up-list').prepend(row);
+    chain = chain.then(() => new Promise((res) => {
+      const xhr = new XMLHttpRequest();
+      const q = new URLSearchParams({ name: f.name, rel: f.webkitRelativePath || f.name, b: batch });
+      xhr.open('POST', '/web/upload?' + q);
+      xhr.upload.onprogress = (e) => { if (e.lengthComputable) row.querySelector('i').style.width = (e.loaded / e.total) * 100 + '%'; };
+      xhr.onload = () => { row.querySelector('span').textContent = xhr.status === 200 ? '✅' : '❌'; row.querySelector('i').style.width = '100%'; res(); };
+      xhr.onerror = () => { row.querySelector('span').textContent = '❌'; res(); };
+      xhr.send(f);
+    }));
+  }
+}
+$('#pick').addEventListener('change', (e) => { upload([...e.target.files]); e.target.value = ''; });
+$('#pick-dir').addEventListener('change', (e) => { upload([...e.target.files]); e.target.value = ''; });
+const drop = $('#drop');
+drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('on'); });
+drop.addEventListener('dragleave', () => drop.classList.remove('on'));
+drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('on'); upload([...e.dataTransfer.files]); });
+
+status();
+setInterval(() => { if (!$('#main').classList.contains('hide')) loadFiles(); else status(); }, 4000);
+</script>
+</body>
+</html>
